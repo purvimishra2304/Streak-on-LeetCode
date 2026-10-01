@@ -1,0 +1,20 @@
+class Solution {
+    private int maxLen = 0;
+
+    public int longestZigZag(TreeNode root) {
+        dfs(root, 0, 0);
+        return maxLen;
+    }
+
+    private void dfs(TreeNode node, int left, int right) {
+        if (node == null) return;
+
+        maxLen = Math.max(maxLen, Math.max(left, right));
+
+        // Move to left child: extends 'right' path, resets 'left' path
+        dfs(node.left, right + 1, 0);
+
+        // Move to right child: extends 'left' path, resets 'right' path
+        dfs(node.right, 0, left + 1);
+    }
+}
