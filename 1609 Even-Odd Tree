@@ -1,0 +1,43 @@
+import java.util.LinkedList;
+import java.util.Queue;
+
+class Solution {
+    public boolean isEvenOddTree(TreeNode root) {
+        if (root == null) return true;
+
+        Queue<TreeNode> queue = new LinkedList<>();
+        queue.add(root);
+        int level = 0;
+
+        while (!queue.isEmpty()) {
+            int size = queue.size();
+            // Track previous value based on current level rule
+            int prev = (level % 2 == 0) ? Integer.MIN_VALUE : Integer.MAX_VALUE;
+
+            for (int i = 0; i < size; i++) {
+                TreeNode current = queue.poll();
+
+                // Even level: must be odd AND strictly increasing
+                if (level % 2 == 0) {
+                    if (current.val % 2 == 0 || current.val <= prev) {
+                        return false;
+                    }
+                } 
+                // Odd level: must be even AND strictly decreasing
+                else {
+                    if (current.val % 2 != 0 || current.val >= prev) {
+                        return false;
+                    }
+                }
+
+                prev = current.val; // Update prev for next node in same row
+
+                if (current.left != null) queue.add(current.left);
+                if (current.right != null) queue.add(current.right);
+            }
+            level++; // Move to next level
+        }
+
+        return true;
+    }
+}
