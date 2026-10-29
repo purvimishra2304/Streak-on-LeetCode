@@ -1,0 +1,40 @@
+/**
+ * Definition for a binary tree node.
+ * public class TreeNode {
+ *     int val;
+ *     TreeNode left;
+ *     TreeNode right;
+ *     TreeNode() {}
+ *     TreeNode(int val) { this.val = val; }
+ *     TreeNode(int val, TreeNode left, TreeNode right) {
+ *         this.val = val;
+ *         this.left = left;
+ *         this.right = right;
+ *     }
+ * }
+ */
+class Solution {
+    // Keeps track of the cumulative sum of nodes visited so far (from largest to current)
+    private int cumulativeSum = 0;
+
+    public TreeNode convertBST(TreeNode root) {
+        reverseInOrder(root);
+        return root;
+    }
+
+    private void reverseInOrder(TreeNode node) {
+        if (node == null) {
+            return;
+        }
+
+        // 1. Traverse the right subtree first (greater keys)
+        reverseInOrder(node.right);
+
+        // 2. Update the current node's value
+        cumulativeSum += node.val;
+        node.val = cumulativeSum;
+
+        // 3. Traverse the left subtree last (smaller keys)
+        reverseInOrder(node.left);
+    }
+}
